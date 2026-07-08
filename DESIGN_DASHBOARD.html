@@ -526,7 +526,7 @@
             ALINK-Mini is a simplified 2-chiplet validation setup. It connects the Master Chiplet directly to the Slave Chiplet over an AXI4-Lite bus interface, bypassing the address decoder and memory blocks. To drive the transactions, the Master Chiplet contains an automated generator FSM (`cmd_gen_mini`) that runs only the register checks, enabling a self-checking hardware validation loop.
           </p>
 
-          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System 1 Block Diagram</h3>
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System 1 Block Diagram (Nesting Leaf Modules)</h3>
           <div class="block-diagram-container">
             <div class="mermaid">
               flowchart LR
@@ -534,14 +534,19 @@
                   direction LR
                   subgraph AXM_MINI ["AXM Mini Chiplet (Master Chiplet)"]
                     direction TB
-                    CG_M[cmd_gen_mini: Automated Tester]
-                    ENG_M[axm_engine: Master FSM]
+                    subgraph CG_M ["cmd_gen_mini (Automated Tester)"]
+                      direction TB
+                      L0_M[lfsr32: seed generator *LEAF*]
+                      L1_M[lfsr32: addr/data generator *LEAF*]
+                      M0_M[misr32: signature compressor *LEAF*]
+                    end
+                    ENG_M[axm_engine: Master FSM *LEAF*]
                     CG_M --> ENG_M
                   end
                   
                   subgraph AXS_MINI ["AXS Mini Chiplet (Slave Chiplet)"]
                     direction TB
-                    REGS_M[axs_regs: ID & Scratchpad Registers]
+                    REGS_M[axs_regs: ID & Scratchpad Registers *LEAF*]
                   end
                   
                   ENG_M == AXI4-Lite Channel Link ==> REGS_M
@@ -549,33 +554,67 @@
                 style AXM_MINI fill:#1a233a,stroke:#6366f1,stroke-width:2px;
                 style AXS_MINI fill:#112530,stroke:#06b6d4,stroke-width:2px;
                 style ALINK_MINI fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+                style CG_M fill:#1b1e2e,stroke:#9ca3af,stroke-width:1px;
             </div>
           </div>
 
-          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
-          <div class="block-details-grid">
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">cmd_gen_mini</span>
-                <span class="block-detail-type">RTL (System 1 Driver)</span>
+          <!-- Indented Block Hierarchy Tree -->
+          <details open style="margin-top: 1.5rem; margin-bottom: 1rem;">
+            <summary>📁 View System Block Hierarchy (Tree View)</summary>
+            <pre style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; overflow-x: auto; margin-top: 0; margin-bottom: 0;">
+alink_mini_top (System 1 Top Wrapper)
+ ├── axm_chiplet_mini (Master Chiplet)
+ │    ├── cmd_gen_mini (Automated Tester FSM)
+ │    │    ├── lfsr32 (Seed Generator - Leaf Block C-01)
+ │    │    ├── lfsr32 (Addr/Data Generator - Leaf Block C-01)
+ │    │    └── misr32 (Signature Compressor - Leaf Block C-02)
+ │    └── axm_engine (AXI Master Driver FSM - Leaf Block AL-02)
+ └── axs_chiplet_mini (Slave Chiplet)
+      └── axs_regs (AXI Register File - Leaf Block AL-07)
+            </pre>
+          </details>
+
+          <!-- Collapsible Detailed Descriptions -->
+          <details open>
+            <summary>View Detailed Block Descriptions & Ports</summary>
+            <div class="block-details-grid">
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">cmd_gen_mini</span>
+                  <span class="block-detail-type">RTL parent module (System 1 Driver)</span>
+                </div>
+                <p class="block-detail-text">The automated master driver FSM. Instantiates the prerequisite <strong>lfsr32</strong> and <strong>misr32</strong> blocks as child leaf modules. On receiving a top-level `go` pulse, it drives register writes and reads directly to check the register bank, then captures the checksum signature.</p>
               </div>
-              <p class="block-detail-text">The automated master driver for System 1. Instantiates the prerequisite LFSR and MISR blocks. On receiving a top-level `go` pulse, it drives register writes and reads directly to check the register bank, then captures the checksum signature.</p>
-            </div>
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">axm_engine</span>
-                <span class="block-detail-type">RTL (AL-02)</span>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">lfsr32</span>
+                  <span class="block-detail-type">RTL Leaf module (C-01)</span>
+                </div>
+                <p class="block-detail-text">A 32-bit Galois Linear Feedback Shift Register. Acts as a leaf module instantiated inside cmd_gen_mini to generate pseudo-random data streams.</p>
               </div>
-              <p class="block-detail-text">Acts as the bus master protocol translator. Translates command requests into standard AXI4-Lite handshake channels (AW, W, B, AR, R), and checks for transaction timeouts.</p>
-            </div>
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">axs_regs</span>
-                <span class="block-detail-type">RTL (AL-07)</span>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">misr32</span>
+                  <span class="block-detail-type">RTL Leaf module (C-02)</span>
+                </div>
+                <p class="block-detail-text">A Multiple-Input Signature Register. Acts as a leaf module instantiated inside cmd_gen_mini to compress readback data streams into a 32-bit signature register.</p>
               </div>
-              <p class="block-detail-text">The register file slave. Resolves AXI reads and writes to ID register (0x00), scratch pads (0x04, 0x08), and a transaction success counter WRCNT (0x0C).</p>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axm_engine</span>
+                  <span class="block-detail-type">RTL Leaf module (AL-02)</span>
+                </div>
+                <p class="block-detail-text">Acts as the bus master protocol translator. Translates command requests into standard AXI4-Lite handshake channels (AW, W, B, AR, R), and checks for transaction timeouts.</p>
+              </div>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axs_regs</span>
+                  <span class="block-detail-type">RTL Leaf module (AL-07)</span>
+                </div>
+                <p class="block-detail-text">The register file slave. Resolves AXI reads and writes to ID register (0x00), scratch pads (0x04, 0x08), and a transaction success counter WRCNT (0x0C).</p>
+              </div>
             </div>
-          </div>
+          </details>
         </div>
 
         <!-- System 2: Full ALINK -->
@@ -588,7 +627,7 @@
             This is the complete system. It introduces the AXI address decoder (`axs_dec`), wraps the Master and Slave components inside chiplet shells, instantiates an SRAM memory bank block, and hooks up the automated 3-phase test supervisor FSM.
           </p>
 
-          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System 2 Block Diagram</h3>
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System 2 Block Diagram (Nesting Leaf Modules)</h3>
           <div class="block-diagram-container">
             <div class="mermaid">
               flowchart LR
@@ -596,18 +635,25 @@
                   direction LR
                   subgraph AXM_CHIP ["AXM Chiplet (Master Chiplet)"]
                     direction TB
-                    CG[cmd_gen: 3-phase test generator]
-                    ENG_F[axm_engine: Master FSM]
-                    PMON[axil_pmon: AXI protocol monitor]
+                    subgraph CG ["cmd_gen (3-phase test generator)"]
+                      direction TB
+                      L0_F[lfsr32: seed generator *LEAF*]
+                      L1_F[lfsr32: addr/data generator *LEAF*]
+                      M0_F[misr32: signature compressor *LEAF*]
+                    end
+                    ENG_F[axm_engine: Master FSM *LEAF*]
+                    PMON[axil_pmon: AXI protocol monitor *LEAF*]
                     CG --> ENG_F
                     ENG_F --- PMON
                   end
                   
                   subgraph AXS_CHIP ["AXS Chiplet (Slave Chiplet)"]
                     direction TB
-                    DEC[axs_dec: 1-to-2 decoder]
-                    REGS_F[axs_regs: Reg slave]
-                    MEM[axs_mem: SRAM slave]
+                    DEC[axs_dec: 1-to-2 decoder *LEAF*]
+                    REGS_F[axs_regs: Reg slave *LEAF*]
+                    subgraph MEM ["axs_mem (SRAM slave)"]
+                      RAM[sram_bank: 1Kx32 Memory *LEAF*]
+                    end
                     DEC --> REGS_F
                     DEC --> MEM
                   end
@@ -617,40 +663,99 @@
                 style AXM_CHIP fill:#1a233a,stroke:#6366f1,stroke-width:2px;
                 style AXS_CHIP fill:#112530,stroke:#06b6d4,stroke-width:2px;
                 style ALINK_FULL fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+                style CG fill:#1b1e2e,stroke:#9ca3af,stroke-width:1px;
+                style MEM fill:#112128,stroke:#9ca3af,stroke-width:1px;
             </div>
           </div>
 
-          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
-          <div class="block-details-grid">
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">cmd_gen</span>
-                <span class="block-detail-type">RTL (AL-01)</span>
+          <!-- Indented Block Hierarchy Tree -->
+          <details open style="margin-top: 1.5rem; margin-bottom: 1rem;">
+            <summary>📁 View System Block Hierarchy (Tree View)</summary>
+            <pre style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; overflow-x: auto; margin-top: 0; margin-bottom: 0;">
+alink_top (System 2 Top Wrapper)
+ ├── axm_chiplet (Master Chiplet)
+ │    ├── cmd_gen (3-Phase Test FSM)
+ │    │    ├── lfsr32 (Seed Generator - Leaf Block C-01)
+ │    │    ├── lfsr32 (Addr/Data Generator - Leaf Block C-01)
+ │    │    └── misr32 (Signature Compressor - Leaf Block C-02)
+ │    ├── axm_engine (AXI Master Driver FSM - Leaf Block AL-02)
+ │    └── axil_pmon (AXI Protocol Checker - Leaf Block AL-03)
+ └── axs_chiplet (Slave Chiplet)
+      ├── axs_dec (1-to-2 AXI Decoder - Leaf Block AL-06)
+      ├── axs_regs (AXI Register File - Leaf Block AL-07)
+      └── axs_mem (AXI Memory Interface)
+           └── sram_bank (1Kx32 SRAM Bank - Leaf Block MI-01)
+            </pre>
+          </details>
+
+          <details open>
+            <summary>View Detailed Block Descriptions & Ports</summary>
+            <div class="block-details-grid">
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">cmd_gen</span>
+                  <span class="block-detail-type">RTL parent module (AL-01)</span>
+                </div>
+                <p class="block-detail-text">A 3-phase self-test commander. Instantiates two <strong>lfsr32</strong> and one <strong>misr32</strong> as child leaf modules. It generates write traffic (Phase 1) and read traffic (Phase 2) to SRAM, then verifies status registers (Phase 3).</p>
               </div>
-              <p class="block-detail-text">A 3-phase self-test commander. It generates write traffic (Phase 1) and read traffic (Phase 2) to SRAM using internal LFSRs, then verifies status registers (Phase 3). It monitors error flags and generates a cumulative signature output.</p>
-            </div>
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">axil_pmon</span>
-                <span class="block-detail-type">RTL (AL-03)</span>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">lfsr32</span>
+                  <span class="block-detail-type">RTL Leaf module (C-01)</span>
+                </div>
+                <p class="block-detail-text">A 32-bit Galois Linear Feedback Shift Register. Acts as a leaf module instantiated inside cmd_gen to generate pseudo-random write/read stimulus data.</p>
               </div>
-              <p class="block-detail-text">A synthesizable protocol checker that monitors AXI channels combinationally. It validates that signals like `awvalid` stay high until `awready` asserts, ensuring protocol compliance.</p>
-            </div>
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">axs_dec</span>
-                <span class="block-detail-type">RTL (AL-06)</span>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">misr32</span>
+                  <span class="block-detail-type">RTL Leaf module (C-02)</span>
+                </div>
+                <p class="block-detail-text">A Multiple-Input Signature Register. Acts as a leaf module instantiated inside cmd_gen to compress readback data streams into a 32-bit signature register.</p>
               </div>
-              <p class="block-detail-text">A 1-to-2 address decoder. Directs write and read transactions to either the Register file (if address MSB is 0) or the Memory wrapper (if address MSB is 1).</p>
-            </div>
-            <div class="block-detail-item">
-              <div class="block-detail-header">
-                <span class="block-detail-name">axs_mem</span>
-                <span class="block-detail-type">RTL (AL-08)</span>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axm_engine</span>
+                  <span class="block-detail-type">RTL Leaf module (AL-02)</span>
+                </div>
+                <p class="block-detail-text">Acts as the bus master protocol translator. Translates command requests into standard AXI4-Lite handshake channels (AW, W, B, AR, R), and checks for transaction timeouts.</p>
               </div>
-              <p class="block-detail-text">Adapts the simple dual-port SRAM bank wrapper into an AXI4-Lite memory slave, mapping read/write channels to physical memory controls.</p>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axil_pmon</span>
+                  <span class="block-detail-type">RTL Leaf module (AL-03)</span>
+                </div>
+                <p class="block-detail-text">A synthesizable protocol checker that monitors AXI channels combinationally. It validates that signals like `awvalid` stay high until `awready` asserts, ensuring protocol compliance.</p>
+              </div>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axs_dec</span>
+                  <span class="block-detail-type">RTL Leaf module (AL-06)</span>
+                </div>
+                <p class="block-detail-text">A 1-to-2 address decoder. Directs write and read transactions to either the Register file (if address MSB is 0) or the Memory wrapper (if address MSB is 1).</p>
+              </div>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axs_regs</span>
+                  <span class="block-detail-type">RTL Leaf module (AL-07)</span>
+                </div>
+                <p class="block-detail-text">The register file slave. Resolves AXI reads and writes to ID register (0x00), scratch pads (0x04, 0x08), and a transaction success counter WRCNT (0x0C).</p>
+              </div>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">axs_mem</span>
+                  <span class="block-detail-type">RTL parent module (AL-08)</span>
+                </div>
+                <p class="block-detail-text">Adapts the dual-port SRAM memory slave into an AXI4-Lite compliant slave, instantiating the <strong>sram_bank</strong> leaf module under the hood.</p>
+              </div>
+              <div class="block-detail-item">
+                <div class="block-detail-header">
+                  <span class="block-detail-name">sram_bank</span>
+                  <span class="block-detail-type">RTL Leaf module (MI-01)</span>
+                </div>
+                <p class="block-detail-text">A simple dual-port 1024x32 SRAM block. Serves as the raw memory array leaf module instantiated inside axs_mem.</p>
+              </div>
             </div>
-          </div>
+          </details>
         </div>
       </section>
 
@@ -690,36 +795,44 @@
             AXION is a dual-chiplet accelerator SoC designed to run on Cadence Protium. The <strong>Compute Chiplet (CCX)</strong> runs on `clk_a` and the <strong>Memory/IO Chiplet (MIO)</strong> runs on `clk_b` (half speed). They communicate across an asynchronous boundary via the synthesizable <strong>Die-to-Die Link (d2d_link)</strong>.
           </p>
 
-          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System Block Diagram</h3>
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System Block Diagram (Nesting Leaf Modules)</h3>
           <div class="block-diagram-container">
             <div class="mermaid">
               flowchart TB
                 subgraph SOCTOP ["AXION SoC Top (axion_soc_top)"]
                   direction TB
                   CG[clkgen_unit: Reset & clock lines]
-                  STIM[stim_gen: LFSR32 seeded pattern gen]
-                  CHECK[result_checker: MISR32 signature verifier]
-                  MON[monitor_unit: Performance counters]
+                  subgraph STIM ["stim_gen (Pattern Generator)"]
+                    L_STIM[lfsr32: seed generator *LEAF*]
+                  end
+                  subgraph CHECK ["result_checker (Verifier)"]
+                    M_CHECK[misr32: signature verifier *LEAF*]
+                  end
+                  MON[monitor_unit: Performance counters *LEAF*]
                   
                   subgraph CCX ["Compute Chiplet (CCX) @ clk_a (Fast)"]
                     direction TB
                     CCX_TOP[ccx_top]
                     CCX_CTRL[ccx_ctrl: seq_fsm + ccx_csr]
-                    CCX_CORE[ccx_core]
-                    PE[pe_array: 4x4 array of pe_mac]
-                    ACC[accum_unit]
+                    subgraph CCX_CORE ["ccx_core ( systolic array wrap )"]
+                      direction TB
+                      subgraph PE_ARR ["pe_array ( 4x4 PE grid )"]
+                        PE[pe_mac: MAC multiply accumulate *LEAF*]
+                      end
+                      ACC[accum_unit: reduction collector]
+                    end
                     
                     CCX_TOP --> CCX_CTRL
                     CCX_TOP --> CCX_CORE
-                    CCX_CORE --> PE
+                    CCX_CORE --> PE_ARR
                     CCX_CORE --> ACC
                   end
                   
                   subgraph D2D ["Die-To-Die Link (d2d_link) - CDC Boundary"]
                     direction LR
-                    TX[d2d_tx: Packetizer + CRC16]
-                    FIFO[async_fifo: Gray-pointer CDC]
-                    RX[d2d_rx: Depacketizer + Credit manager]
+                    TX[d2d_tx: Packetizer + CRC16 *LEAF*]
+                    FIFO[async_fifo: Gray-pointer CDC *LEAF*]
+                    RX[d2d_rx: Depacketizer + Credit manager *LEAF*]
                     TX --> FIFO --> RX
                   end
 
@@ -727,7 +840,11 @@
                     direction TB
                     MIO_TOP[mio_top]
                     MIO_DMA[mio_dma: addr_gen + move_engine + csr]
-                    MIO_MEM[mio_mem: sram_bank x4 + bank_arb]
+                    subgraph MIO_MEM ["mio_mem ( Memory banks )"]
+                      RAM[sram_bank: 1Kx32 Memory x4 *LEAF*]
+                      ARB[bank_arb: round robin scheduler *LEAF*]
+                      ARB --> RAM
+                    end
                     
                     MIO_TOP --> MIO_DMA
                     MIO_TOP --> MIO_MEM
@@ -743,13 +860,50 @@
                 style MIO fill:#112530,stroke:#06b6d4,stroke-width:2px;
                 style D2D fill:#2b191d,stroke:#ef4444,stroke-width:2px,stroke-dasharray: 5 5;
                 style SOCTOP fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+                style STIM fill:#112128,stroke:#9ca3af;
+                style CHECK fill:#112128,stroke:#9ca3af;
+                style CCX_CORE fill:#1b1e2e,stroke:#9ca3af;
+                style PE_ARR fill:#22283e,stroke:#9ca3af;
+                style MIO_MEM fill:#1b2520,stroke:#9ca3af;
             </div>
           </div>
 
-          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
-          <p class="card-desc">Here is the detailed function of every block inside the AXION design:</p>
-          
-          <div class="block-details-grid">
+          <!-- Indented Block Hierarchy Tree -->
+          <details open style="margin-top: 1.5rem; margin-bottom: 1rem;">
+            <summary>📁 View System Block Hierarchy (Tree View)</summary>
+            <pre style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; overflow-x: auto; margin-top: 0; margin-bottom: 0;">
+axion_soc_top (SoC Top Wrapper)
+ ├── clkgen_unit (Reset & Clock Controller - Leaf Block)
+ ├── stim_gen (Stimulus Pattern Generator)
+ │    └── lfsr32 (Galois Pattern LFSR - Leaf Block C-01)
+ ├── result_checker (Verification Signature Compressor)
+ │    └── misr32 (Signature Compressor - Leaf Block C-02)
+ ├── monitor_unit (Performance Counter Monitor - Leaf Block)
+ ├── ccx_chiplet (Compute Chiplet - ccx_top)
+ │    ├── ccx_ctrl (Sys-FSM & ccx_csr Controller)
+ │    └── ccx_core (Core Systolic Wrapper)
+ │         ├── pe_array (4x4 PE Multiply Grid)
+ │         │    └── pe_mac (16 instances of MAC Multiply-Accumulate - Leaf Block)
+ │         └── accum_unit (Reduction & Formatting Accumulator)
+ ├── d2d_link (Die-To-Die CDC Boundary Link)
+ │    ├── d2d_tx (Packetizer & CRC-16 Generator - Leaf Block)
+ │    ├── async_fifo (Gray-pointer Clock Crossing FIFO - Leaf Block C-08)
+ │    └── d2d_rx (Depacketizer & Credit Flow Receiver - Leaf Block)
+ └── mio_chiplet (Memory/IO Chiplet - mio_top)
+      ├── mio_dma (DMA Move Engine & Address Generator Controller)
+      └── mio_mem (Memory Array Subsystem)
+           ├── bank_arb (Bank Port Arbitration Scheduler)
+           │    └── rr_arbiter (Round Robin Priority Arbiter - Leaf Block C-04)
+           └── sram_bank (4 instances of 1Kx32 SRAM Array - Leaf Block MI-01)
+            </pre>
+          </details>
+
+          <!-- Collapsible Detailed Descriptions -->
+          <details open>
+            <summary>View Detailed Block Descriptions & Ports</summary>
+            <p class="card-desc" style="margin-top: 1rem;">Here is the detailed function of every block inside the AXION design, clearly marking parent sub-systems vs final synthesizable leaf modules:</p>
+            
+            <div class="block-details-grid">
             <div class="block-detail-item">
               <div class="block-detail-header">
                 <span class="block-detail-name">lfsr32</span>
@@ -876,7 +1030,7 @@
               </div>
               <p class="block-detail-text">Unpacks data flits, verifies the CRC16 field, drops/corrupts invalid frames, and coordinates credit-based backpressure back to D2D TX.</p>
             </div>
-          </div>
+          </details>
 
           <h3 style="font-family: var(--font-outfit); margin-top: 2rem;">Design Waveform Probes</h3>
           <table>
@@ -973,8 +1127,26 @@
             </div>
           </div>
 
-          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
-          <div class="block-details-grid">
+          <!-- Indented Block Hierarchy Tree -->
+          <details open style="margin-top: 1.5rem; margin-bottom: 1rem;">
+            <summary>📁 View System Block Hierarchy (Tree View)</summary>
+            <pre style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; overflow-x: auto; margin-top: 0; margin-bottom: 0;">
+slink_top (SLINK Top Wrapper)
+ ├── pkt_block (Packetizer Sub-Unit)
+ │    ├── evt_fifo (Event Input Buffer - Leaf Block C-03)
+ │    ├── pkt_framer (Split & Frame Pack FSM - Leaf Block SL-01)
+ │    └── pkt_mon (Stall & Size Tracker Monitor - Leaf Block SL-02)
+ └── ser_block (Serializer/Deserializer Sub-Unit)
+      ├── baud_tick (Timing Clock Enable Generator - Leaf Block SL-05)
+      ├── uart_tx (Parallel-to-Serial Transmitter - Leaf Block SL-06)
+      ├── uart_rx (Serial-to-Parallel Receiver - Leaf Block SL-07)
+      └── depack (Word Reassembly & Checksum Checker - Leaf Block SL-08)
+            </pre>
+          </details>
+
+          <details open>
+            <summary>View Detailed Block Descriptions & Ports</summary>
+            <div class="block-details-grid">
             <div class="block-detail-item">
               <div class="block-detail-header">
                 <span class="block-detail-name">pkt_framer</span>
@@ -1018,6 +1190,7 @@
               <p class="block-detail-text">Reconstructs words. It scans the incoming bytes for the 0xA5 SOF, extracts the count, reconstructs four 32-bit words, validates the XOR checksum byte, and pipes the output to a checker MISR signature register.</p>
             </div>
           </div>
+          </details>
         </div>
       </section>
 
@@ -1072,8 +1245,27 @@
             </div>
           </div>
 
-          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
-          <div class="block-details-grid">
+          <!-- Indented Block Hierarchy Tree -->
+          <details open style="margin-top: 1.5rem; margin-bottom: 1rem;">
+            <summary>📁 View System Block Hierarchy (Tree View)</summary>
+            <pre style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; overflow-x: auto; margin-top: 0; margin-bottom: 0;">
+nexa_top (2x2 Router Mesh Grid Wrapper)
+ ├── nexa_router (Router 0,0)
+ │    ├── nx_in_port x5 (Ingress Buffer Ports)
+ │    │    └── skid_buffer (Ingress Handshake Buffer - Leaf Block C-05)
+ │    └── nx_out_port x5 (Egress Switch Ports)
+ │         └── rr_arbiter (Round Robin Port Arbiter - Leaf Block C-04)
+ ├── nexa_router (Router 1,0)
+ ├── nexa_router (Router 0,1)
+ ├── nexa_router (Router 1,1)
+ ├── nx_tgen x4 (Traffic Generators - Leaf Block NX-04)
+ └── nx_tsink x4 (Traffic Signature Sinks - Leaf Block NX-05)
+            </pre>
+          </details>
+
+          <details open>
+            <summary>View Detailed Block Descriptions & Ports</summary>
+            <div class="block-details-grid">
             <div class="block-detail-item">
               <div class="block-detail-header">
                 <span class="block-detail-name">nx_in_port</span>
@@ -1103,6 +1295,7 @@
               <p class="block-detail-text">`nx_tgen` acts as a local generator generating packets with destination addresses. `nx_tsink` verifies arrival indices, counts packets, and registers payload signatures.</p>
             </div>
           </div>
+          </details>
         </div>
       </section>
 
@@ -1166,8 +1359,32 @@
             </div>
           </div>
 
-          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
-          <div class="block-details-grid">
+          <!-- Indented Block Hierarchy Tree -->
+          <details open style="margin-top: 1.5rem; margin-bottom: 1rem;">
+            <summary>📁 View System Block Hierarchy (Tree View)</summary>
+            <pre style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; overflow-x: auto; margin-top: 0; margin-bottom: 0;">
+eqd_top (CDC Equivalence Wrapper)
+ ├── eqa_top (Chiplet A - Fast Domain)
+ │    ├── tgen x3 (Sequence Data Generators - Leaf Block)
+ │    ├── gen_arb (Round Robin Stream Arbiter - Leaf Block C-04)
+ │    ├── add_const (Payload Incrementor - Leaf Block)
+ │    └── acc_a (Fast-Side Accumulator Register)
+ ├── d2d_link (Die-To-Die CDC Boundary Link)
+ │    ├── d2d_tx (Packetizer - Leaf Block)
+ │    ├── async_fifo (Asynchronous Crossing FIFO - Leaf Block C-08)
+ │    └── d2d_rx (Depacketizer - Leaf Block)
+ └── eqb_top (Chiplet B - Slow Domain)
+      ├── buf_unit (RAM Buffer Interface)
+      │    └── ram_fifo (SRAM Ring Buffer - Leaf Block)
+      ├── sub_const (Payload Decrementor - Leaf Block)
+      ├── acc_b (Slow-Side Accumulator Register)
+      └── chk_unit (Verification Comparator - Leaf Block)
+            </pre>
+          </details>
+
+          <details open>
+            <summary>View Detailed Block Descriptions & Ports</summary>
+            <div class="block-details-grid">
             <div class="block-detail-item">
               <div class="block-detail-header">
                 <span class="block-detail-name">tgen</span>
@@ -1211,6 +1428,7 @@
               <p class="block-detail-text">Recomputes the expected payload on-the-fly from the sequence bits, compares it with the output from `sub_const`, and counts total successes/failures.</p>
             </div>
           </div>
+          </details>
         </div>
       </section>
 
