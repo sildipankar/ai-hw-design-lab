@@ -1,0 +1,7 @@
+Running: xsim.dir/tb_cdc_pack_snap/xsimk.exe -wdb tb_cdc_pack.wdb -simmode gui -simrunnum 0 -socket 53839
+Design successfully loaded
+Design Loading Memory Usage: 11160 KB (Peak: 11160 KB)
+Design Loading CPU Usage: 0 ms
+Simulation completed
+Simulation Memory Usage: 13200 KB (Peak: 13200 KB)
+Simulation CPU Usage: 15 ms

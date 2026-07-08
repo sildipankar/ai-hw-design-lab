@@ -1,0 +1,1 @@
+"tb_universal_top" -s "tb_universal_top_snap" -debug "typical" -timescale "1ns/1ps" 

@@ -1,0 +1,6 @@
+0.7
+2020.2
+Nov 14 2025
+19:37:27
+D:/design_plans/pnp_ip/cdc_pack/cdc_pack.sv,1783446096,systemVerilog,,D:/design_plans/pnp_ip/cdc_pack/tb_cdc_pack.sv,,cdc_bit_sync;cdc_bus_handshake;cdc_example_top;cdc_pulse_sync,,,,SIMULATION,,,,
+D:/design_plans/pnp_ip/cdc_pack/tb_cdc_pack.sv,1783446125,systemVerilog,,,,tb_cdc_pack,,,,SIMULATION,,,,

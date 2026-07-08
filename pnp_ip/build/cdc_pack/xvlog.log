@@ -1,0 +1,7 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/cdc_pack/cdc_pack.sv" into library work
+INFO: [VRFC 10-311] analyzing module cdc_bit_sync
+INFO: [VRFC 10-311] analyzing module cdc_pulse_sync
+INFO: [VRFC 10-311] analyzing module cdc_bus_handshake
+INFO: [VRFC 10-311] analyzing module cdc_example_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/cdc_pack/tb_cdc_pack.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_cdc_pack

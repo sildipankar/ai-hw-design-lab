@@ -1,0 +1,1 @@
+"tb_async_fifo" -s "tb_async_fifo_snap" -debug "typical" -timescale "1ns/1ps" 

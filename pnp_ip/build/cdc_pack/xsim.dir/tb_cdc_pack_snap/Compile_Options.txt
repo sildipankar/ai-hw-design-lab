@@ -1,0 +1,1 @@
+"tb_cdc_pack" -s "tb_cdc_pack_snap" -debug "typical" -timescale "1ns/1ps" 

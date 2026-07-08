@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/universal_top/tb_universal_top.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_universal_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/universal_top/universal_top.sv" into library work
+INFO: [VRFC 10-311] analyzing module universal_top

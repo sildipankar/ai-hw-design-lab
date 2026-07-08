@@ -1,0 +1,384 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Jul  7 23:10:43 2026
+# Process ID         : 28688
+# Current directory  : D:/design_plans/pnp_ip/build/synth_axi_lite_regs
+# Command line       : vivado.exe -mode batch -source D:\design_plans\pnp_ip\scripts\synth.tcl -tclargs D:\design_plans\pnp_ip\axi_lite_regs axi_lite_regs
+# Log file           : D:/design_plans/pnp_ip/build/synth_axi_lite_regs/vivado.log
+# Journal file       : D:/design_plans/pnp_ip/build/synth_axi_lite_regs\vivado.jou
+# Running On         : DESKTOP-TPQLB9E
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9900X 12-Core Processor            
+# CPU Frequency      : 4392 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 24
+# Host memory        : 66125 MB
+# Swap memory        : 13958 MB
+# Total Virtual      : 80084 MB
+# Available Virtual  : 58609 MB
+#-----------------------------------------------------------
+source {D:\design_plans\pnp_ip\scripts\synth.tcl}
+# set block_dir [lindex $argv 0]
+# set top       [lindex $argv 1]
+# set part      "xc7a35ticsg324-1L"
+# if {[llength $argv] >= 3} { set part [lindex $argv 2] }
+# if {[llength [get_parts -quiet $part]] == 0} {
+#     set part [lindex [get_parts] 0]
+#     puts "WARNING: requested part not installed, falling back to: $part"
+# }
+# set rtl {}
+# foreach f [glob -nocomplain [file join $block_dir *.sv]] {
+#     if {![string match "tb_*" [file tail $f]]} { lappend rtl $f }
+# }
+# if {[llength $rtl] == 0} { puts "ERROR: no RTL files in $block_dir"; exit 1 }
+# puts "INFO: part=$part top=$top files=$rtl"
+INFO: part=xc7a35ticsg324-1L top=axi_lite_regs files=D:/design_plans/pnp_ip/axi_lite_regs/axi_lite_regs.sv
+# read_verilog -sv $rtl
+# synth_design -top $top -part $part -mode out_of_context
+Command: synth_design -top axi_lite_regs -part xc7a35ticsg324-1L -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a35ti'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35ti'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 31080
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1130.992 ; gain = 538.488
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'axi_lite_regs' [D:/design_plans/pnp_ip/axi_lite_regs/axi_lite_regs.sv:25]
+INFO: [Synth 8-6155] done synthesizing module 'axi_lite_regs' (0#1) [D:/design_plans/pnp_ip/axi_lite_regs/axi_lite_regs.sv:25]
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_bresp[1] driven by constant 0
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_bresp[0] driven by constant 0
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_rresp[1] driven by constant 0
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_rresp[0] driven by constant 0
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1250.789 ; gain = 658.285
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1250.789 ; gain = 658.285
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a35ticsg324-1L
+INFO: [Device 21-403] Loading part xc7a35ticsg324-1L
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 1250.789 ; gain = 658.285
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1250.789 ; gain = 658.285
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Registers : 
+	               32 Bit    Registers := 8     
+	                8 Bit    Registers := 1     
+	                4 Bit    Registers := 1     
+	                1 Bit    Registers := 5     
++---Multipliers : 
+	              32x32  Multipliers := 1     
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 11    
+	   6 Input   32 Bit        Muxes := 5     
+	   2 Input    1 Bit        Muxes := 4     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 90 (col length:60)
+BRAMs: 100 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+DSP Report: Generating DSP result_q0, operation Mode is: A*B.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: Generating DSP result_q0, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: Generating DSP result_q0, operation Mode is: A*B.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: Generating DSP result_q0, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+DSP Report: operator result_q0 is absorbed into DSP result_q0.
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_bresp[1] driven by constant 0
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_bresp[0] driven by constant 0
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_rresp[1] driven by constant 0
+WARNING: [Synth 8-3917] design axi_lite_regs has port s_axil_rresp[0] driven by constant 0
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[47]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[46]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[45]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[44]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[43]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[42]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[41]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[40]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[39]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[38]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[37]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[36]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[35]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[34]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[33]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[32]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[31]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[30]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[29]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[28]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[27]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[26]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[25]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[24]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[23]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[22]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[21]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[20]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[19]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[18]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[17]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[16]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[15]) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[47]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[46]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[45]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[44]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[43]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[42]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[41]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[40]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[39]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[38]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[37]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[36]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[35]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[34]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[33]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[32]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[31]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[30]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[29]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[28]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[27]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[26]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[25]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[24]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[23]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[22]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[21]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[20]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[19]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[18]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[17]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[16]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[15]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[14]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[13]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[12]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[11]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[10]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[9]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[8]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[7]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[6]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[5]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[4]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[3]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[2]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[1]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[0]__0) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[47]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[46]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[45]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[44]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[43]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[42]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[41]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[40]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[39]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[38]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[37]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[36]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[35]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[34]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[33]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[32]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[31]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[30]__1) is unused and will be removed from module axi_lite_regs.
+WARNING: [Synth 8-3332] Sequential element (result_q_reg[29]__1) is unused and will be removed from module axi_lite_regs.
+INFO: [Common 17-14] Message 'Synth 8-3332' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:13 . Memory (MB): peak = 1452.188 ; gain = 859.684
+---------------------------------------------------------------------------------
+ Sort Area is  result_q0_0 : 0 0 : 3101 5879 : Used 1 time 0
+ Sort Area is  result_q0_0 : 0 1 : 2778 5879 : Used 1 time 0
+ Sort Area is  result_q0_3 : 0 0 : 2759 5418 : Used 1 time 0
+ Sort Area is  result_q0_3 : 0 1 : 2659 5418 : Used 1 time 0
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++--------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name   | DSP Mapping    | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++--------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|axi_lite_regs | A*B            | 18     | 16     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|axi_lite_regs | (PCIN>>17)+A*B | 16     | 16     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|axi_lite_regs | A*B            | 18     | 18     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|axi_lite_regs | (PCIN>>17)+A*B | 18     | 16     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
++--------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:13 . Memory (MB): peak = 1452.188 ; gain = 859.684
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:07 ; elapsed = 00:00:13 . Memory (MB): peak = 1452.188 ; gain = 859.684
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++--------------+-----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name   | DSP Mapping     | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++--------------+-----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|axi_lite_regs | (A*B)'          | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|axi_lite_regs | A*B             | 17     | 17     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|axi_lite_regs | (PCIN>>17+A*B)' | 17     | 15     | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 1    | 
++--------------+-----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |CARRY4  |     4|
+|2     |DSP48E1 |     3|
+|3     |LUT1    |     4|
+|4     |LUT2    |    19|
+|5     |LUT3    |    20|
+|6     |LUT4    |     2|
+|7     |LUT5    |    47|
+|8     |LUT6    |    82|
+|9     |MUXF7   |     1|
+|10    |FDCE    |   258|
++------+--------+------+
+
+Report Instance Areas: 
++------+---------+-------+------+
+|      |Instance |Module |Cells |
++------+---------+-------+------+
+|1     |top      |       |   440|
++------+---------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 153 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+Synthesis Optimization Complete : Time (s): cpu = 00:00:10 ; elapsed = 00:00:16 . Memory (MB): peak = 1680.305 ; gain = 1087.801
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.004 . Memory (MB): peak = 1693.367 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 8 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1797.441 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 93758022
+INFO: [Common 17-83] Releasing license: Synthesis
+15 Infos, 108 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:11 ; elapsed = 00:00:18 . Memory (MB): peak = 1797.441 ; gain = 1208.926
+# report_utilization    -file ${top}_utilization.rpt
+# report_timing_summary -file ${top}_timing.rpt
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1L, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+WARNING: [Timing 38-493] Port clk has one or several leaf clock pins in its transitive fanout without any clock buffer on the path and no clock reaching the clock pin(s). Vivado cannot infer the clock source when no clock buffer is found on the path to a leaf clock pin.
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+# puts "SYNTH_OK $top"
+SYNTH_OK axi_lite_regs
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Tue Jul  7 23:11:12 2026...

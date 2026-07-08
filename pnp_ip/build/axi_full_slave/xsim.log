@@ -1,0 +1,42 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Jul  7 23:10:35 2026
+# Process ID         : 24828
+# Current directory  : D:/design_plans/pnp_ip/build/axi_full_slave
+# Command line       : xsim.exe -mode tcl -source {xsim.dir/tb_axi_full_slave_snap/xsim_script.tcl}
+# Log file           : D:/design_plans/pnp_ip/build/axi_full_slave/xsim.log
+# Journal file       : D:/design_plans/pnp_ip/build/axi_full_slave\xsim.jou
+# Running On         : DESKTOP-TPQLB9E
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9900X 12-Core Processor            
+# CPU Frequency      : 4392 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 24
+# Host memory        : 66125 MB
+# Swap memory        : 13958 MB
+# Total Virtual      : 80084 MB
+# Available Virtual  : 58516 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_axi_full_slave_snap/xsim_script.tcl
+# xsim {tb_axi_full_slave_snap} -wdb {tb_axi_full_slave.wdb} -autoloadwcfg -tclbatch {D:/design_plans/pnp_ip/scripts/xsim_run.tcl}
+Time resolution is 1 ps
+source D:/design_plans/pnp_ip/scripts/xsim_run.tcl
+## log_wave -recursive *
+## run all
+-- 1: INCR len=0
+-- 2: INCR len=7
+-- 3: INCR len=15
+-- 4: WRAP len=3 from 0x308
+-- 5: FIXED len=3
+-- 6: wstrb partial
+-- 7: gaps + backpressure INCR len=15
+-- 8: gaps + backpressure WRAP len=3
+-- 9: concurrent write + read
+TB PASS
+$finish called at time : 3125 ns : File "D:/design_plans/pnp_ip/axi_full_slave/tb_axi_full_slave.sv" Line 274
+## quit
+INFO: [Common 17-206] Exiting xsim at Tue Jul  7 23:10:37 2026...

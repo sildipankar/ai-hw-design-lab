@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/tb_dpi/mac_dut.sv" into library work
+INFO: [VRFC 10-311] analyzing module mac_dut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/tb_dpi/tb_dpi.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_dpi

@@ -1,0 +1,42 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Jul  7 19:45:53 2026
+# Process ID         : 2064
+# Current directory  : D:/design_plans/pnp_ip/build/axi_lite_regs
+# Command line       : xsim.exe -mode tcl -source {xsim.dir/tb_axi_lite_regs_snap/xsim_script.tcl}
+# Log file           : D:/design_plans/pnp_ip/build/axi_lite_regs/xsim.log
+# Journal file       : D:/design_plans/pnp_ip/build/axi_lite_regs\xsim.jou
+# Running On         : DESKTOP-TPQLB9E
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9900X 12-Core Processor            
+# CPU Frequency      : 4392 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 24
+# Host memory        : 66125 MB
+# Swap memory        : 13958 MB
+# Total Virtual      : 80084 MB
+# Available Virtual  : 64687 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_axi_lite_regs_snap/xsim_script.tcl
+# xsim {tb_axi_lite_regs_snap} -wdb {tb_axi_lite_regs.wdb} -autoloadwcfg -tclbatch {D:/design_plans/pnp_ip/scripts/xsim_run.tcl}
+Time resolution is 1 ps
+source D:/design_plans/pnp_ip/scripts/xsim_run.tcl
+## log_wave -recursive *
+## run all
+  ok: ID = cafe0100
+  ok: SCRATCH = 12345678
+ERROR: SCRATCH wstrb @04  got 1234ff78  expected 12ab5678
+  ok: SCRATCH w-first = a0a0a0a0
+  ok: SCRATCH aw-first = 0b0b0b0b
+  ok: GPIO_IN = 5a5a00ff
+  ok: RESULT = 0000002a
+  ok: STATUS.done = 00000001
+  ok: unmapped = deadbeef
+TB FAIL: 1 errors
+$finish called at time : 575 ns : File "D:/design_plans/pnp_ip/axi_lite_regs/tb_axi_lite_regs.sv" Line 158
+## quit
+INFO: [Common 17-206] Exiting xsim at Tue Jul  7 19:45:55 2026...

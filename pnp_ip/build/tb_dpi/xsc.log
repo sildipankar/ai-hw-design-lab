@@ -1,0 +1,7 @@
+Multi-threading is on. Using 22 slave threads.
+Running compilation flowD:\AMDDesignTools\2025.2\Vivado\data\..\tps\mingw\6.2.0\win64.o\nt\bin\gcc.exe  -fPIC -c -Wa,-W    -I"D:\AMDDesignTools\2025.2\Vivado\data/xsim/include" -I"D:\AMDDesignTools\2025.2\Vivado\data/xsim/systemc" "D:\design_plans\pnp_ip\tb_dpi\golden.c" -o "xsim.dir/work\xsc\golden.win64.obj" -DXILINX_SIMULATOR -Wno-deprecated-declarations 
+Done compilation
+Linking with command:
+D:\AMDDesignTools\2025.2\Vivado\data\..\tps\mingw\6.2.0\win64.o\nt\bin\ar.exe rcs "xsim.dir/work\xsc\dpi.a" "xsim.dir/work\xsc\golden.win64.obj"   
+
+Done linking: "xsim.dir/work\xsc\dpi.a"

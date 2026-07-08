@@ -1,0 +1,1 @@
+"tb_axi_full_slave" -s "tb_axi_full_slave_snap" -debug "typical" -timescale "1ns/1ps" 

@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/tb_universal/example_dut.sv" into library work
+INFO: [VRFC 10-311] analyzing module example_dut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/tb_universal/tb_universal.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_universal

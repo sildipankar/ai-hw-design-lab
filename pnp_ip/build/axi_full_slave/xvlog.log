@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/axi_full_slave/axi_full_slave.sv" into library work
+INFO: [VRFC 10-311] analyzing module axi_full_slave
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/axi_full_slave/tb_axi_full_slave.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_axi_full_slave

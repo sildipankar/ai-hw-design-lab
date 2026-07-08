@@ -1,0 +1,1 @@
+"tb_axi_lite_regs" -s "tb_axi_lite_regs_snap" -debug "typical" -timescale "1ns/1ps" 

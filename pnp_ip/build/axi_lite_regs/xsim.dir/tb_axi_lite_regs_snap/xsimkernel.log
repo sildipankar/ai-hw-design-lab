@@ -1,0 +1,7 @@
+Running: xsim.dir/tb_axi_lite_regs_snap/xsimk.exe -wdb tb_axi_lite_regs.wdb -simmode gui -simrunnum 0 -socket 58328
+Design successfully loaded
+Design Loading Memory Usage: 10132 KB (Peak: 10132 KB)
+Design Loading CPU Usage: 46 ms
+Simulation completed
+Simulation Memory Usage: 12128 KB (Peak: 12128 KB)
+Simulation CPU Usage: 46 ms

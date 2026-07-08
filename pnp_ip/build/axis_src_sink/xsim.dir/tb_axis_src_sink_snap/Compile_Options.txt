@@ -1,0 +1,1 @@
+"tb_axis_src_sink" -s "tb_axis_src_sink_snap" -debug "typical" -timescale "1ns/1ps" 

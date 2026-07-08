@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/axis_src_sink/axis_src_sink.sv" into library work
+INFO: [VRFC 10-311] analyzing module axis_lfsr_src
+INFO: [VRFC 10-311] analyzing module axis_sig_sink
+INFO: [VRFC 10-311] analyzing module axis_example_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/design_plans/pnp_ip/axis_src_sink/tb_axis_src_sink.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_axis_src_sink

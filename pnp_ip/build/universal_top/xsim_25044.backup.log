@@ -1,0 +1,65 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Jul  7 23:17:34 2026
+# Process ID         : 25044
+# Current directory  : D:/design_plans/pnp_ip/build/universal_top
+# Command line       : xsim.exe -mode tcl -source {xsim.dir/tb_universal_top_snap/xsim_script.tcl}
+# Log file           : D:/design_plans/pnp_ip/build/universal_top/xsim.log
+# Journal file       : D:/design_plans/pnp_ip/build/universal_top\xsim.jou
+# Running On         : DESKTOP-TPQLB9E
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9900X 12-Core Processor            
+# CPU Frequency      : 4392 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 24
+# Host memory        : 66125 MB
+# Swap memory        : 13958 MB
+# Total Virtual      : 80084 MB
+# Available Virtual  : 55610 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_universal_top_snap/xsim_script.tcl
+# xsim {tb_universal_top_snap} -wdb {tb_universal_top.wdb} -autoloadwcfg -tclbatch {D:/design_plans/pnp_ip/scripts/xsim_run.tcl}
+Time resolution is 1 ps
+source D:/design_plans/pnp_ip/scripts/xsim_run.tcl
+## log_wave -recursive *
+## run all
+  ok: mode 0 gap 0  w32 sig=d5446a1d
+  ok: mode 0 gap 0  w64 sig=29d0a448
+  ok: mode 0 gap 0  w32 sig=d5446a1d
+  ok: mode 0 gap 0  w64 sig=29d0a448
+  ok: mode 0 gap 3  w32 sig=d5446a1d
+  ok: mode 0 gap 3  w64 sig=29d0a448
+  ok: mode 0 gap 3  w32 sig=d5446a1d
+  ok: mode 0 gap 3  w64 sig=29d0a448
+  ok: mode 1 gap 0  w32 sig=51d858de
+  ok: mode 1 gap 0  w64 sig=51d858de
+  ok: mode 1 gap 0  w32 sig=51d858de
+  ok: mode 1 gap 0  w64 sig=51d858de
+  ok: mode 1 gap 3  w32 sig=51d858de
+  ok: mode 1 gap 3  w64 sig=51d858de
+  ok: mode 1 gap 3  w32 sig=51d858de
+  ok: mode 1 gap 3  w64 sig=51d858de
+  ok: mode 2 gap 0  w32 sig=16746e41
+  ok: mode 2 gap 0  w64 sig=16746e41
+  ok: mode 2 gap 0  w32 sig=16746e41
+  ok: mode 2 gap 0  w64 sig=16746e41
+  ok: mode 2 gap 3  w32 sig=16746e41
+  ok: mode 2 gap 3  w64 sig=16746e41
+  ok: mode 2 gap 3  w32 sig=16746e41
+  ok: mode 2 gap 3  w64 sig=16746e41
+  ok: mode 3 gap 0  w32 sig=034eda82
+  ok: mode 3 gap 0  w64 sig=e533d48f
+  ok: mode 3 gap 0  w32 sig=034eda82
+  ok: mode 3 gap 0  w64 sig=e533d48f
+  ok: mode 3 gap 3  w32 sig=034eda82
+  ok: mode 3 gap 3  w64 sig=e533d48f
+  ok: mode 3 gap 3  w32 sig=034eda82
+  ok: mode 3 gap 3  w64 sig=e533d48f
+TB PASS
+$finish called at time : 411355 ns : File "D:/design_plans/pnp_ip/universal_top/tb_universal_top.sv" Line 233
+## quit
+INFO: [Common 17-206] Exiting xsim at Tue Jul  7 23:17:36 2026...

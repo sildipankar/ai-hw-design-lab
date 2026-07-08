@@ -1,0 +1,34 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Jul  7 23:17:58 2026
+# Process ID         : 31888
+# Current directory  : D:/design_plans/pnp_ip/build/cdc_pack
+# Command line       : xsim.exe -mode tcl -source {xsim.dir/tb_cdc_pack_snap/xsim_script.tcl}
+# Log file           : D:/design_plans/pnp_ip/build/cdc_pack/xsim.log
+# Journal file       : D:/design_plans/pnp_ip/build/cdc_pack\xsim.jou
+# Running On         : DESKTOP-TPQLB9E
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9900X 12-Core Processor            
+# CPU Frequency      : 4392 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 24
+# Host memory        : 66125 MB
+# Swap memory        : 13958 MB
+# Total Virtual      : 80084 MB
+# Available Virtual  : 57626 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_cdc_pack_snap/xsim_script.tcl
+# xsim {tb_cdc_pack_snap} -wdb {tb_cdc_pack.wdb} -autoloadwcfg -tclbatch {D:/design_plans/pnp_ip/scripts/xsim_run.tcl}
+Time resolution is 1 ps
+source D:/design_plans/pnp_ip/scripts/xsim_run.tcl
+## log_wave -recursive *
+## run all
+bus=50/50 pulses=20/20 errors=0
+TB PASS
+$finish called at time : 2710500 ps : File "D:/design_plans/pnp_ip/cdc_pack/tb_cdc_pack.sv" Line 173
+## quit
+INFO: [Common 17-206] Exiting xsim at Tue Jul  7 23:18:00 2026...
