@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AXION SoC & Sub-Designs Prototyping Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: #151c2c;
+      --card-border: #222e47;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-secondary: #06b6d4; /* Cyan */
+      --accent-green: #10b981; /* Emerald */
+      --accent-orange: #f59e0b; /* Amber */
+      --accent-red: #ef4444; /* Rose */
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-inter);
+      line-height: 1.5;
+      padding: 2.5rem 1.5rem;
+    }
+
+    header {
+      max-width: 1400px;
+      margin: 0 auto 2.5rem auto;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .title-area h1 {
+      font-family: var(--font-outfit);
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--text-main), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .title-area p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .badge {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+    }
+
+    /* Sidebar controls */
+    .sidebar {
+      position: sticky;
+      top: 2rem;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .nav-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .nav-card h3 {
+      font-family: var(--font-outfit);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-family: var(--font-outfit);
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      background: transparent;
+      border: 1px solid transparent;
+      text-align: left;
+    }
+
+    .nav-link:hover {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: rgba(99, 102, 241, 0.2);
+      color: var(--accent-primary);
+    }
+
+    .nav-link.active {
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: var(--accent-primary);
+    }
+
+    /* Content Pane */
+    .content-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .section-title-wrapper {
+      border-bottom: 2px solid var(--card-border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-outfit);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card-title {
+      font-family: var(--font-outfit);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card-title .tag {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    .tag.primary { background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); border: 1px solid rgba(99, 102, 241, 0.3); }
+    .tag.secondary { background: rgba(6, 182, 212, 0.15); color: var(--accent-secondary); border: 1px solid rgba(6, 182, 212, 0.3); }
+    .tag.green { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag.orange { background: rgba(245, 158, 11, 0.15); color: var(--accent-orange); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag.red { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .card-desc {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    /* Map Boxes */
+    .map-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: #0d131f;
+      border: 2px solid var(--accent-primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .map-step {
+      display: flex;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem;
+      align-items: center;
+    }
+
+    .map-num {
+      background: var(--accent-primary);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: var(--font-outfit);
+      flex-shrink: 0;
+    }
+
+    .map-step.next .map-num {
+      background: var(--accent-secondary);
+    }
+    
+    .map-step.future .map-num {
+      background: var(--text-muted);
+    }
+
+    .map-text h4 {
+      font-family: var(--font-outfit);
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .map-text p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .map-link {
+      color: var(--accent-secondary);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Block Diagram Visuals */
+    .block-diagram-container {
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    /* Detailed block list descriptions */
+    .block-details-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .block-detail-item {
+      background: rgba(34, 46, 71, 0.2);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+    }
+
+    .block-detail-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.25rem;
+    }
+
+    .block-detail-name {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-secondary);
+      font-size: 1rem;
+    }
+
+    .block-detail-type {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .block-detail-text {
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    th {
+      font-family: var(--font-outfit);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      background: rgba(34, 46, 71, 0.2);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .probe-name {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      color: var(--accent-secondary);
+    }
+
+    .cell-block {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Verbose Technical System Description style */
+    .tech-verbose-desc {
+      background: rgba(99, 102, 241, 0.05);
+      border-left: 4px solid var(--accent-primary);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+    .tech-verbose-desc.cyan {
+      border-left-color: var(--accent-secondary);
+      background: rgba(6, 182, 212, 0.05);
+    }
+    .tech-verbose-desc h4 {
+      font-family: var(--font-outfit);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-secondary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .tech-verbose-desc.cyan h4 {
+      color: var(--accent-secondary);
+    }
+    .tech-verbose-desc p {
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+    .tech-verbose-desc ul {
+      margin-left: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .tech-verbose-desc li {
+      margin-bottom: 0.25rem;
+      line-height: 1.5;
+    }
+    .tech-verbose-desc strong {
+      color: #fff;
+    }
+  </style>
+  
+  <!-- Mermaid for rendering advanced flowcharts -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'dark',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true, htmlLabels: true }
+    });
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="title-area">
+      <h1>AXION SoC & Sub-Designs Prototyping Dashboard</h1>
+      <p>Original Specifications Layout & Multi-Stage verification</p>
+    </div>
+    <div class="badge-bar">
+      <div class="badge">DESIGNS: 5</div>
+      <div class="badge">ARCHITECTURE: CHIPLET & CDC</div>
+      <div class="badge">PLATFORM: PROTIUM X3</div>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+      <div class="nav-card">
+        <h3>Quick Navigation</h3>
+        <ul class="nav-list">
+          <li><a href="#map-sec" class="nav-link">🎮 Adventure Map</a></li>
+          <li><a href="#alink-sec" class="nav-link">2. ALINK (System 1)</a></li>
+          <li><a href="#axion-sec" class="nav-link">1. AXION SoC (System 2)</a></li>
+          <li><a href="#slink-sec" class="nav-link">3. SLINK (Serial)</a></li>
+          <li><a href="#nexa-sec" class="nav-link">4. NEXA NoC</a></li>
+          <li><a href="#eqd-sec" class="nav-link">5. EQD (Equiv)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content Panel -->
+    <div class="content-pane">
+      
+      <!-- ==================== ADVENTURE MAP (ROADMAP FOR 10-YEAR OLD) ==================== -->
+      <section id="map-sec">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">🎮 Prototyping Adventure Map (Read First!)</h2>
+        </div>
+        
+        <div class="card">
+          <p class="card-desc" style="font-size: 1.15rem;">
+            Hello! We are building a massive hardware project. Because it is too big to build all at once, we will break it down into small steps. Follow this map to complete the adventure!
+          </p>
+
+          <div class="map-container">
+            <div class="map-step">
+              <div class="map-num">1</div>
+              <div class="map-text">
+                <h4>Build the Bricks (Prerequisites)</h4>
+                <p>We must first build the basic LEGO bricks: <strong>LFSR32</strong> (random number generator) and <strong>MISR32</strong> (checksum compressor). Both ALINK and AXION need these! 
+                👉 <em>Go to <a href="file:///d:/design_plans/KID_GUIDE.md" class="map-link">KID_GUIDE.md</a> and run <strong>Step 1 to Step 5</strong> to make and test these bricks today!</em></p>
+              </div>
+            </div>
+
+            <div class="map-step next">
+              <div class="map-num">2</div>
+              <div class="map-text">
+                <h4>System 1: Build ALINK (Easiest Complete System)</h4>
+                <p>ALINK is our sandbox system. It runs on a single clock domain and connects an AXI master block to AXI slaves. We combine the bricks we made in Step 1 with a decoder, some registers, and an SRAM wrap.
+                👉 <em>Once Milestone 1 is done, you will use KID_GUIDE.md (Milestone 2) to build this complete system!</em></p>
+              </div>
+            </div>
+
+            <div class="map-step future">
+              <div class="map-num">3</div>
+              <div class="map-text">
+                <h4>System 2: Build AXION SoC (The Boss Level!)</h4>
+                <p>This is the big game. Once we prove ALINK works on hardware, we will build the full AXION SoC by adding Compute arrays, Memory/DMA controllers, and the Die-to-Die CDC FIFO Link boundary!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DESIGN 2: ALINK ==================== -->
+      <section id="alink-sec">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">2. ALINK AXI4-Lite Systems</h2>
+        </div>
+
+        <div class="tech-verbose-desc cyan">
+          <h4>💡 System 1 & 2 Technical Brief: AXI4-Lite Integration</h4>
+          <p>
+            The <strong>ALINK</strong> series is a single-clock control and memory subsystem designed to validate AXI4-Lite communication channels, custom memory mapping, and protocol conformance testing in emulation. It splits the design process into two manageable, fully automated system-level milestones:
+          </p>
+          <ul>
+            <li>
+              <strong>System 1 (ALINK-Mini — Register Loopback):</strong> Verifies a direct master-to-slave link. The master chiplet hosts a register-oriented generator (<code>cmd_gen_mini</code>) driving the AXI Master FSM (<code>axm_engine</code>). It sends AXI transactions directly to the slave chiplet's register file (<code>axs_regs</code>) to perform write and read validation loops, compressing responses into a MISR checksum. <em>Purpose: Proves the basic channel FSM handshake and CSR updates run with 0 errors.</em>
+            </li>
+            <li>
+              <strong>System 2 (Full ALINK — Decoded Multi-Slave):</strong> Introduces the full memory mapping path. It adds a 1-to-2 address decoder (<code>axs_dec</code>) that routes read/write transactions based on address bit 15, dividing traffic between registers and an SRAM memory wrapper (<code>axs_mem</code>). It also incorporates a protocol monitor (<code>axil_pmon</code>) to flag combinational bus violations. <em>Purpose: Validates address-range decoding, dual-port block SRAM accesses, and system-level test sweeps.</em>
+            </li>
+          </ul>
+          <p>
+            <strong>Hardware Interface:</strong> A single external <code>go</code> pulse triggers the automated commander FSM. The system sweeps through the write/read test phases and latches a <code>done</code> flag alongside a 32-bit MISR <code>chk_sig</code>. Verification relies on matching this signature against a golden reference.
+          </p>
+        </div>
+        
+        <!-- System 1: ALINK-Mini -->
+        <div class="card" style="margin-bottom: 2rem;">
+          <div class="card-title">
+            System 1: ALINK-Mini (AXI Register Loopback with Chiplets)
+            <span class="tag secondary">Master-Slave Chiplet Link</span>
+          </div>
+          <p class="card-desc">
+            ALINK-Mini is a simplified 2-chiplet validation setup. It connects the Master Chiplet directly to the Slave Chiplet over an AXI4-Lite bus interface, bypassing the address decoder and memory blocks. To drive the transactions, the Master Chiplet contains an automated generator FSM (`cmd_gen_mini`) that runs only the register checks, enabling a self-checking hardware validation loop.
+          </p>
+
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System 1 Block Diagram</h3>
+          <div class="block-diagram-container">
+            <div class="mermaid">
+              flowchart LR
+                subgraph ALINK_MINI ["ALINK-Mini Top (alink_mini_top)"]
+                  direction LR
+                  subgraph AXM_MINI ["AXM Mini Chiplet (Master Chiplet)"]
+                    direction TB
+                    CG_M[cmd_gen_mini: Automated Tester]
+                    ENG_M[axm_engine: Master FSM]
+                    CG_M --> ENG_M
+                  end
+                  
+                  subgraph AXS_MINI ["AXS Mini Chiplet (Slave Chiplet)"]
+                    direction TB
+                    REGS_M[axs_regs: ID & Scratchpad Registers]
+                  end
+                  
+                  ENG_M == AXI4-Lite Channel Link ==> REGS_M
+                end
+                style AXM_MINI fill:#1a233a,stroke:#6366f1,stroke-width:2px;
+                style AXS_MINI fill:#112530,stroke:#06b6d4,stroke-width:2px;
+                style ALINK_MINI fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
+          <div class="block-details-grid">
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">cmd_gen_mini</span>
+                <span class="block-detail-type">RTL (System 1 Driver)</span>
+              </div>
+              <p class="block-detail-text">The automated master driver for System 1. Instantiates the prerequisite LFSR and MISR blocks. On receiving a top-level `go` pulse, it drives register writes and reads directly to check the register bank, then captures the checksum signature.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">axm_engine</span>
+                <span class="block-detail-type">RTL (AL-02)</span>
+              </div>
+              <p class="block-detail-text">Acts as the bus master protocol translator. Translates command requests into standard AXI4-Lite handshake channels (AW, W, B, AR, R), and checks for transaction timeouts.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">axs_regs</span>
+                <span class="block-detail-type">RTL (AL-07)</span>
+              </div>
+              <p class="block-detail-text">The register file slave. Resolves AXI reads and writes to ID register (0x00), scratch pads (0x04, 0x08), and a transaction success counter WRCNT (0x0C).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- System 2: Full ALINK -->
+        <div class="card">
+          <div class="card-title">
+            System 2: Full ALINK (Decoded Multi-Slave Link)
+            <span class="tag green">Decoded Chiplets</span>
+          </div>
+          <p class="card-desc">
+            This is the complete system. It introduces the AXI address decoder (`axs_dec`), wraps the Master and Slave components inside chiplet shells, instantiates an SRAM memory bank block, and hooks up the automated 3-phase test supervisor FSM.
+          </p>
+
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System 2 Block Diagram</h3>
+          <div class="block-diagram-container">
+            <div class="mermaid">
+              flowchart LR
+                subgraph ALINK_FULL ["Full ALINK Top (alink_top)"]
+                  direction LR
+                  subgraph AXM_CHIP ["AXM Chiplet (Master Chiplet)"]
+                    direction TB
+                    CG[cmd_gen: 3-phase test generator]
+                    ENG_F[axm_engine: Master FSM]
+                    PMON[axil_pmon: AXI protocol monitor]
+                    CG --> ENG_F
+                    ENG_F --- PMON
+                  end
+                  
+                  subgraph AXS_CHIP ["AXS Chiplet (Slave Chiplet)"]
+                    direction TB
+                    DEC[axs_dec: 1-to-2 decoder]
+                    REGS_F[axs_regs: Reg slave]
+                    MEM[axs_mem: SRAM slave]
+                    DEC --> REGS_F
+                    DEC --> MEM
+                  end
+                  
+                  ENG_F == AXI4-Lite Channel Bus ==> DEC
+                end
+                style AXM_CHIP fill:#1a233a,stroke:#6366f1,stroke-width:2px;
+                style AXS_CHIP fill:#112530,stroke:#06b6d4,stroke-width:2px;
+                style ALINK_FULL fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
+          <div class="block-details-grid">
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">cmd_gen</span>
+                <span class="block-detail-type">RTL (AL-01)</span>
+              </div>
+              <p class="block-detail-text">A 3-phase self-test commander. It generates write traffic (Phase 1) and read traffic (Phase 2) to SRAM using internal LFSRs, then verifies status registers (Phase 3). It monitors error flags and generates a cumulative signature output.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">axil_pmon</span>
+                <span class="block-detail-type">RTL (AL-03)</span>
+              </div>
+              <p class="block-detail-text">A synthesizable protocol checker that monitors AXI channels combinationally. It validates that signals like `awvalid` stay high until `awready` asserts, ensuring protocol compliance.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">axs_dec</span>
+                <span class="block-detail-type">RTL (AL-06)</span>
+              </div>
+              <p class="block-detail-text">A 1-to-2 address decoder. Directs write and read transactions to either the Register file (if address MSB is 0) or the Memory wrapper (if address MSB is 1).</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">axs_mem</span>
+                <span class="block-detail-type">RTL (AL-08)</span>
+              </div>
+              <p class="block-detail-text">Adapts the simple dual-port SRAM bank wrapper into an AXI4-Lite memory slave, mapping read/write channels to physical memory controls.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DESIGN 1: AXION SOC ==================== -->
+      <section id="axion-sec">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">1. AXION SoC (System 2 - The Main SoC)</h2>
+        </div>
+
+        <div class="tech-verbose-desc">
+          <h4>💡 System 2 Technical Brief: Multi-Clock Compute/DMA & CDC Link</h4>
+          <p>
+            The <strong>AXION SoC</strong> is a dual-chiplet, multi-clock domain hardware accelerator. It models a high-performance computation engine connected to a memory sub-system, illustrating asynchronous clock-domain crossing (CDC) and credit-based flow control interfaces:
+          </p>
+          <ul>
+            <li>
+              <strong>Compute Chiplet (CCX):</strong> Operates on a high-frequency system clock (<code>clk_a</code>). It features a 4x4 systolic matrix-multiply array (16 identical MAC processing elements) fed by an internal sequencer FSM. Computations are gathered by a reduction accumulator, formatted, and pushed to the Die-to-Die Link.
+            </li>
+            <li>
+              <strong>Die-to-Die Link (D2D):</strong> Manages the asynchronous boundary. <code>d2d_tx</code> aggregates computed results, encapsulates them with a sequence index and CRC-16 checksum, and writes them to a dual-clock asynchronous FIFO. <code>d2d_rx</code> reads from the FIFO on <code>clk_b</code>, verifies frame checksums, and returns buffer-avail credit pulses back to the fast domain via toggle-based synchronizers.
+            </li>
+            <li>
+              <strong>Memory/IO Chiplet (MIO):</strong> Operates on a slower, half-frequency clock (<code>clk_b</code>). A multi-channel DMA Move Engine unloads packets from D2D, arbitrates access through a round-robin scheduler, and writes data to 4 distinct SRAM banks.
+            </li>
+          </ul>
+          <p>
+            <strong>Hardware Test Loop:</strong> A top-level stimulus generator drives inputs into the compute domain based on seed settings. At the memory output, a 32-bit signature compressor gathers the final written results. This allows developers to prove cycle-and-data equivalence across the entire asynchronous boundary.
+          </p>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">
+            AXION SoC Top-Level Architecture
+            <span class="tag primary">Dual Clock Domain (CDC)</span>
+          </div>
+          <p class="card-desc">
+            AXION is a dual-chiplet accelerator SoC designed to run on Cadence Protium. The <strong>Compute Chiplet (CCX)</strong> runs on `clk_a` and the <strong>Memory/IO Chiplet (MIO)</strong> runs on `clk_b` (half speed). They communicate across an asynchronous boundary via the synthesizable <strong>Die-to-Die Link (d2d_link)</strong>.
+          </p>
+
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">System Block Diagram</h3>
+          <div class="block-diagram-container">
+            <div class="mermaid">
+              flowchart TB
+                subgraph SOCTOP ["AXION SoC Top (axion_soc_top)"]
+                  direction TB
+                  CG[clkgen_unit: Reset & clock lines]
+                  STIM[stim_gen: LFSR32 seeded pattern gen]
+                  CHECK[result_checker: MISR32 signature verifier]
+                  MON[monitor_unit: Performance counters]
+                  
+                  subgraph CCX ["Compute Chiplet (CCX) @ clk_a (Fast)"]
+                    direction TB
+                    CCX_TOP[ccx_top]
+                    CCX_CTRL[ccx_ctrl: seq_fsm + ccx_csr]
+                    CCX_CORE[ccx_core]
+                    PE[pe_array: 4x4 array of pe_mac]
+                    ACC[accum_unit]
+                    
+                    CCX_TOP --> CCX_CTRL
+                    CCX_TOP --> CCX_CORE
+                    CCX_CORE --> PE
+                    CCX_CORE --> ACC
+                  end
+                  
+                  subgraph D2D ["Die-To-Die Link (d2d_link) - CDC Boundary"]
+                    direction LR
+                    TX[d2d_tx: Packetizer + CRC16]
+                    FIFO[async_fifo: Gray-pointer CDC]
+                    RX[d2d_rx: Depacketizer + Credit manager]
+                    TX --> FIFO --> RX
+                  end
+
+                  subgraph MIO ["Memory/IO Chiplet (MIO) @ clk_b (Slow)"]
+                    direction TB
+                    MIO_TOP[mio_top]
+                    MIO_DMA[mio_dma: addr_gen + move_engine + csr]
+                    MIO_MEM[mio_mem: sram_bank x4 + bank_arb]
+                    
+                    MIO_TOP --> MIO_DMA
+                    MIO_TOP --> MIO_MEM
+                  end
+
+                  STIM ==> |Stimulus Data| CCX
+                  CCX ==> |Valid/Ready flits| TX
+                  RX ==> |Valid/Ready flits| MIO
+                  MIO ==> |Result Data| CHECK
+                end
+                
+                style CCX fill:#1a233a,stroke:#6366f1,stroke-width:2px;
+                style MIO fill:#112530,stroke:#06b6d4,stroke-width:2px;
+                style D2D fill:#2b191d,stroke:#ef4444,stroke-width:2px,stroke-dasharray: 5 5;
+                style SOCTOP fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
+          <p class="card-desc">Here is the detailed function of every block inside the AXION design:</p>
+          
+          <div class="block-details-grid">
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">lfsr32</span>
+                <span class="block-detail-type">Leaf Block (C-01)</span>
+              </div>
+              <p class="block-detail-text">A 32-bit seeded Galois Linear Feedback Shift Register (LFSR) using tap polynomial x^32 + x^22 + x^2 + x^1 + 1. Generates pseudo-random, seed-driven stimulus words. Avoids locking up by substituting 32'h1 if a seed of 0 is loaded.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">misr32</span>
+                <span class="block-detail-type">Leaf Block (C-02)</span>
+              </div>
+              <p class="block-detail-text">A Multiple-Input Signature Register (MISR) that compresses an incoming stream of 32-bit data words into a single 32-bit signature value. Used as the signature result checker core on hardware.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">sync_fifo</span>
+                <span class="block-detail-type">Leaf Block (C-03)</span>
+              </div>
+              <p class="block-detail-text">A 16-deep single-clock first-word-fall-through (FWFT) FIFO buffer. Holds valid data elements combinationally on its read port before a read pulse is supplied, allowing smooth pipeline handshakes.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">rr_arbiter</span>
+                <span class="block-detail-type">Leaf Block (C-04)</span>
+              </div>
+              <p class="block-detail-text">A rotating-priority round-robin arbiter for N requesters. Uses a double-request-vector shift operation to assign one-hot grants in a single clock cycle, updating priority state only when a grant is accepted.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">skid_buffer</span>
+                <span class="block-detail-type">Leaf Block (C-05)</span>
+              </div>
+              <p class="block-detail-text">A full-throughput pipeline register with a 1-slot "skid" buffer. Breaks combinational path loops on the ready/valid handshake signals without dropping or duplicating data during stall cycles.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">crc16_gen</span>
+                <span class="block-detail-type">Leaf Block (C-06)</span>
+              </div>
+              <p class="block-detail-text">Computes a CRC-16-CCITT checksum over parallel 32-bit words per cycle using an unrolled loop. Used to check data integrity of packet payloads.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">sync_2ff / pulse_sync</span>
+                <span class="block-detail-type">Leaf Block (C-07)</span>
+              </div>
+              <p class="block-detail-text">Synchronizes signals across asynchronous boundaries. `sync_2ff` passes quasi-static signals through 2 back-to-back flops. `pulse_sync` uses toggle registers to safely carry single-cycle pulse events across clock edges.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">async_fifo</span>
+                <span class="block-detail-type">Leaf Block (C-08)</span>
+              </div>
+              <p class="block-detail-text">A dual-clock Gray-pointer asynchronous FIFO buffer. Uses Gray-coded write and read pointers crossed into destination domains via sync_2ff synchronizers to pass data words safely between clocks.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">clk_div / reset_sync</span>
+                <span class="block-detail-type">Leaf Block (C-09)</span>
+              </div>
+              <p class="block-detail-text">`clk_div` is a simple clock divider (excluded in emulator builds). `reset_sync` provides asynchronous assertion and synchronous deassertion of resets to prevent reset metastability.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">pe_mac</span>
+                <span class="block-detail-type">CCX Leaf Block</span>
+              </div>
+              <p class="block-detail-text">A multiply-accumulate processing element. Performs 8-bit multiplication of incoming coefficients and adds to a running accumulator, featuring a sticky saturation flag.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">pe_array</span>
+                <span class="block-detail-type">CCX Sub-Unit</span>
+              </div>
+              <p class="block-detail-text">A 4x4 systolic matrix array grid consisting of 16 identical `pe_mac` modules to accelerate parallel arithmetic calculations.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">accum_unit</span>
+                <span class="block-detail-type">CCX Sub-Unit</span>
+              </div>
+              <p class="block-detail-text">Gathers raw output values from the systolic grid array, reduces/accumulates them, and formats them for memory storage.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">seq_fsm / ccx_csr</span>
+                <span class="block-detail-type">CCX Controller</span>
+              </div>
+              <p class="block-detail-text">`seq_fsm` orchestrates execution cycles. `ccx_csr` serves as the software mailbox interface (control and status registers).</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">sram_bank</span>
+                <span class="block-detail-type">MIO Leaf Block</span>
+              </div>
+              <p class="block-detail-text">A single 1024x32-bit dual-port static RAM bank configured for reading and writing computed results or test sequences.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">bank_arb</span>
+                <span class="block-detail-type">MIO Sub-Unit</span>
+              </div>
+              <p class="block-detail-text">Uses the round-robin arbiter (`rr_arbiter`) to coordinate read/write conflicts from multiple masters trying to access the SRAM banks.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">addr_gen / move_engine</span>
+                <span class="block-detail-type">MIO DMA Engine</span>
+              </div>
+              <p class="block-detail-text">`addr_gen` handles memory read/write address pointers. `move_engine` serves as the DMA controller, transferring blocks of results autonomously.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">d2d_tx</span>
+                <span class="block-detail-type">D2D Link Block</span>
+              </div>
+              <p class="block-detail-text">Packetizes raw 32-bit word streams into packet flits containing headers, sequences, data payloads, and CRC16 checksums.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">d2d_rx</span>
+                <span class="block-detail-type">D2D Link Block</span>
+              </div>
+              <p class="block-detail-text">Unpacks data flits, verifies the CRC16 field, drops/corrupts invalid frames, and coordinates credit-based backpressure back to D2D TX.</p>
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem;">Design Waveform Probes</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Test Stage</th>
+                <th>DUT</th>
+                <th>Runtime deposit/force stimulus</th>
+                <th>Waveform Probe Signal</th>
+                <th>Pass Criterion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tier 0</td>
+                <td class="cell-block">lfsr32</td>
+                <td>seed=32'h1, pulse load; enable=1 for 32 cycles</td>
+                <td class="probe-name">prdata, valid</td>
+                <td>Value sequence matches golden seed reference; prdata never all-zeros.</td>
+              </tr>
+              <tr>
+                <td>Tier 0</td>
+                <td class="cell-block">misr32</td>
+                <td>valid=1; input data stream sequence 1 to 32'h8000</td>
+                <td class="probe-name">signature</td>
+                <td>Final signature after 16 cycles matches expected hash; clear clears to 0.</td>
+              </tr>
+              <tr>
+                <td>CCX</td>
+                <td class="cell-block">ccx_top</td>
+                <td>Write CSR start; stream operands</td>
+                <td class="probe-name">seq_state, core_busy, acc_sum</td>
+                <td>Systolic calculation yields correct sum; FSM returns to IDLE after task.</td>
+              </tr>
+              <tr>
+                <td>MIO</td>
+                <td class="cell-block">mio_top</td>
+                <td>Write CSR DMA start; address boundary configs</td>
+                <td class="probe-name">dma_busy, sram_wdata, bank_grant</td>
+                <td>DMA completes without address collison; SRAM written properly.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==================== DESIGN 3: SLINK ==================== -->
+      <section id="slink-sec">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">3. SLINK (Serial Telemetry Link)</h2>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">
+            SLINK Block Layout
+            <span class="tag green">UART Loopback Setup</span>
+          </div>
+          <p class="card-desc">
+            SLINK routes words from a local FIFO through a serializer, down a 1-wire UART path, into an oversampling receiver, and reassembles them while validating a checksum. It operates on a single clock with internal baud ticks.
+          </p>
+
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">SLINK Block Diagram</h3>
+          <div class="block-diagram-container">
+            <div class="mermaid">
+              flowchart LR
+                subgraph SLINK ["SLINK Top (slink_top)"]
+                  direction LR
+                  subgraph PKT ["PKT Block (Packetizer)"]
+                    direction TB
+                    FIFO[evt_fifo: sync_fifo buffer]
+                    FRAMER[pkt_framer: formats payload frame]
+                    PMON[pkt_mon: monitors stall times & size]
+                    FIFO --> FRAMER
+                    FRAMER --- PMON
+                  end
+                  
+                  subgraph SER ["SER Block (Serializer/Deserializer)"]
+                    direction TB
+                    BT[baud_tick: generates 16x baud pulses]
+                    TX[uart_tx: serializes parallel bytes]
+                    RX[uart_rx: samples UART pin at bit centers]
+                    DEP[depack: reassembles words + checks XOR]
+                    BT --> TX
+                    BT --> RX
+                    TX -- "txd loopback wire" --> RX
+                    RX --> DEP
+                  end
+                  
+                  FRAMER == Byte Stream ==> TX
+                end
+                style PKT fill:#1a233a,stroke:#6366f1,stroke-width:2px;
+                style SER fill:#112530,stroke:#06b6d4,stroke-width:2px;
+                style SLINK fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
+          <div class="block-details-grid">
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">pkt_framer</span>
+                <span class="block-detail-type">RTL (SL-01)</span>
+              </div>
+              <p class="block-detail-text">A state machine that reads 32-bit values from the FIFO and splits them into bytes. It bundles them into a packet structure: Start of Frame (0xA5) + Byte Count (4) + 16 payload bytes (4 words x 4 bytes) + XOR Checksum byte.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">pkt_mon</span>
+                <span class="block-detail-type">RTL (SL-02)</span>
+              </div>
+              <p class="block-detail-text">A performance and error checking block. It counts sent bytes, registers FIFO write errors (write attempts when full), and tracks the longest cycle stretch where downstream was stalled.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">baud_tick</span>
+                <span class="block-detail-type">RTL (SL-05)</span>
+              </div>
+              <p class="block-detail-text">A programmable count-down clock enable pulse generator. Outputs a single-cycle tick active pulse at 16x the configured baud rate, serving as the timing reference for the UART modules.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">uart_tx</span>
+                <span class="block-detail-type">RTL (SL-06)</span>
+              </div>
+              <p class="block-detail-text">Converts parallel 8-bit bytes into serial UART frames: 1 start bit, 8 data bits (LSB-first), and 1 stop bit, driving the output line `txd` high when idle.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">uart_rx</span>
+                <span class="block-detail-type">RTL (SL-07)</span>
+              </div>
+              <p class="block-detail-text">Filters noise on `rxd`. When it detects a falling start edge, it aligns to the center of the start bit, then samples subsequent bits every 16 ticks, outputs the byte, and checks for framing errors.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">depack</span>
+                <span class="block-detail-type">RTL (SL-08)</span>
+              </div>
+              <p class="block-detail-text">Reconstructs words. It scans the incoming bytes for the 0xA5 SOF, extracts the count, reconstructs four 32-bit words, validates the XOR checksum byte, and pipes the output to a checker MISR signature register.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DESIGN 4: NEXA NOC ==================== -->
+      <section id="nexa-sec">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">4. NEXA (2x2 Mesh NoC Router)</h2>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">
+            NEXA Mesh Interconnect
+            <span class="tag orange">Packet Switched Router Grid</span>
+          </div>
+          <p class="card-desc">
+            NEXA interconnects four nodes in a 2x2 grid. Routers use XY-routing rules to pass single-flit packets combinationally through input ports to targeted output ports.
+          </p>
+
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">Grid Diagram</h3>
+          <div class="block-diagram-container">
+            <div class="mermaid">
+              flowchart TD
+                subgraph NEXA_GRID ["NEXA 2x2 Mesh (nexa_top)"]
+                  direction TB
+                  subgraph N00 ["Node 0,0"]
+                    R00[Router 0,0]
+                    TG00[tgen] --> R00 --> TS00[tsink]
+                  end
+                  subgraph N10 ["Node 1,0"]
+                    R10[Router 1,0]
+                    TG10[tgen] --> R10 --> TS10[tsink]
+                  end
+                  subgraph N01 ["Node 0,1"]
+                    R01[Router 0,1]
+                    TG01[tgen] --> R01 --> TS01[tsink]
+                  end
+                  subgraph N11 ["Node 1,1"]
+                    R11[Router 1,1]
+                    TG11[tgen] --> R11 --> TS11[tsink]
+                  end
+                  
+                  R00 <==> |E / W link| R10
+                  R01 <==> |E / W link| R11
+                  R00 <==> |S / N link| R01
+                  R10 <==> |S / N link| R11
+                end
+                style N00 fill:#1a233a,stroke:#6366f1;
+                style N10 fill:#1a233a,stroke:#6366f1;
+                style N01 fill:#112530,stroke:#06b6d4;
+                style N11 fill:#112530,stroke:#06b6d4;
+                style NEXA_GRID fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
+          <div class="block-details-grid">
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">nx_in_port</span>
+                <span class="block-detail-type">RTL (NX-01)</span>
+              </div>
+              <p class="block-detail-text">Wraps a `skid_buffer` for ingress. It decodes the destination coordinate (X, Y) bits in the flit and decodes them to generate a one-hot request map pointing to North (0), South (1), East (2), West (3), or Local (4) output channels.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">nx_out_port</span>
+                <span class="block-detail-type">RTL (NX-02)</span>
+              </div>
+              <p class="block-detail-text">Monitors output buffers. Uses a 5-input `rr_arbiter` to choose which input port has access to its channel, extracts the target flit through a multiplexer, and registers the output handshake lines.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">nx_router</span>
+                <span class="block-detail-type">Structural (NX-03)</span>
+              </div>
+              <p class="block-detail-text">A 5-port structural router core. Interconnects 5 input ports and 5 output ports by wiring up the transposed request/grant buses and routing input flits to the multiplexers.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">nx_tgen / nx_tsink</span>
+                <span class="block-detail-type">Traffic Engines (NX-04 / NX-05)</span>
+              </div>
+              <p class="block-detail-text">`nx_tgen` acts as a local generator generating packets with destination addresses. `nx_tsink` verifies arrival indices, counts packets, and registers payload signatures.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DESIGN 5: EQD ==================== -->
+      <section id="eqd-sec">
+        <div class="section-title-wrapper">
+          <h2 class="section-title">5. EQD (Equivalence DUT - CDC / Chiplet Configuration)</h2>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">
+            EQD Chiplet Architecture
+            <span class="tag green">CDC Boundary Checker</span>
+          </div>
+          <p class="card-desc">
+            EQD is a purpose-built arithmetic datapath designed to test sequence equivalence. It can be compiled as either a direct monolithic pipeline or as a chiplet design containing a dual-clock D2D FIFO CDC boundary between eqa_top and eqb_top.
+          </p>
+
+          <h3 style="font-family: var(--font-outfit); margin-bottom: 1rem;">EQD Block Diagram</h3>
+          <div class="block-diagram-container">
+            <div class="mermaid">
+              flowchart TB
+                subgraph EQDM ["EQD Top (eqd_top)"]
+                  direction TB
+                  subgraph CHIP_A ["Chiplet A (eqa_top) @ clk_a"]
+                    direction TB
+                    TGEN[tgen x3: word generators]
+                    ARB[gen_arb: RR arbiter]
+                    ADD[add_const: adds K1 to payload]
+                    ACC_A[acc_a: accumulator register]
+                    TGEN --> ARB --> ADD
+                    ADD --> ACC_A
+                  end
+
+                  subgraph D2D_EQD ["Die-To-Die Link CDC Boundary"]
+                    direction LR
+                    D2D_TX_E[d2d_tx]
+                    FIFO_E[async_fifo: Gray CDC]
+                    D2D_RX_E[d2d_rx]
+                    D2D_TX_E --> FIFO_E --> D2D_RX_E
+                  end
+
+                  subgraph CHIP_B ["Chiplet B (eqb_top) @ clk_b"]
+                    direction TB
+                    BUF[buf_unit: ram_fifo buffer]
+                    SUB[sub_const: subtracts K1 from payload]
+                    ACC_B[acc_b: accumulator register]
+                    CHK[chk_unit: word_cmp + result_regs]
+                    
+                    BUF --> SUB --> ACC_B
+                    SUB --> CHK
+                  end
+
+                  ADD ==> D2D_TX_E
+                  D2D_RX_E ==> BUF
+                end
+                style CHIP_A fill:#1a233a,stroke:#6366f1,stroke-width:2px;
+                style CHIP_B fill:#112530,stroke:#06b6d4,stroke-width:2px;
+                style D2D_EQD fill:#2b191d,stroke:#ef4444,stroke-width:2px,stroke-dasharray: 5 5;
+                style EQDM fill:#0b0f19,stroke:#222e47,stroke-width:1px;
+            </div>
+          </div>
+
+          <h3 style="font-family: var(--font-outfit); margin-top: 2rem; margin-bottom: 0.5rem;">Detailed Block Descriptions</h3>
+          <div class="block-details-grid">
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">tgen</span>
+                <span class="block-detail-type">RTL Generator</span>
+              </div>
+              <p class="block-detail-text">Generates self-identifying test words packed with stream IDs and sequence numbers. Calculates `data = (seq + SEED) & 0xFFFF` so the value can be computed in your head at the bench.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">gen_arb</span>
+                <span class="block-detail-type">RTL Arbiter</span>
+              </div>
+              <p class="block-detail-text">A 3-input round-robin arbiter that multiplexes the output words from the three generator streams into a single output pipeline path.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">add_const / sub_const</span>
+                <span class="block-detail-type">RTL Pipes</span>
+              </div>
+              <p class="block-detail-text">`add_const` adds constant `K1` to the data field of the payload on Chip A. `sub_const` subtracts `K1` on Chip B, restoring the original value.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">acc_a / acc_b</span>
+                <span class="block-detail-type">Accumulators</span>
+              </div>
+              <p class="block-detail-text">Accumulators summing up transaction payloads on both sides. Compares are clean: at completion, `acc_a - acc_b` must equal the total transfer count multiplied by K1.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">ram_fifo</span>
+                <span class="block-detail-type">RTL Buffer</span>
+              </div>
+              <p class="block-detail-text">A 16x32 simple static RAM wrapper implementing read and write pointer structures to buffer data at the boundary interface.</p>
+            </div>
+            <div class="block-detail-item">
+              <div class="block-detail-header">
+                <span class="block-detail-name">chk_unit</span>
+                <span class="block-detail-type">RTL Verification Unit</span>
+              </div>
+              <p class="block-detail-text">Recomputes the expected payload on-the-fly from the sequence bits, compares it with the output from `sub_const`, and counts total successes/failures.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+</body>
+</html>
