@@ -1,37 +1,92 @@
-# Git Commands Cheat Sheet
+# Git and Perforce Commands Cheat Sheet
 
-This repo lives here on your computer:
+This file is for simple copy-paste commands.
+
+Your local Git repo folder:
 
 ```powershell
 D:\git_check
 ```
 
-This repo publishes to GitHub here:
+Your GitHub repo:
 
 ```text
 https://github.com/sildipankar/ai-hw-design-lab
 ```
 
-## 1. Every Time Before You Start
+Important rule:
 
-Open PowerShell and go to the repo folder:
+```text
+git add    = prepare file locally
+git commit = save version locally
+git push   = publish to GitHub
+```
+
+If you want everything to remain local, do not run `git push`.
+
+For Perforce:
+
+```text
+p4 edit / p4 add / p4 reconcile = prepare file locally in changelist
+p4 submit                       = publish to Perforce server
+```
+
+If you want everything to remain local in Perforce, do not run `p4 submit`.
+
+## 1. Check Status Before Work
+
+Git:
 
 ```powershell
 cd D:\git_check
 git status
 ```
 
-If it says something like this, you are clean:
+Perforce:
 
-```text
-nothing to commit, working tree clean
+```powershell
+cd D:\your_p4_workspace
+p4 info
+p4 opened
 ```
 
-## 2. Upload a Changed File
+Meaning:
 
-Example: `D:\design_plans\KID_GUIDE.md` changed, and you want to upload the new version as `kids_guide.md` in GitHub.
+```text
+git status = what changed in Git
+p4 opened  = what files are open in Perforce
+```
 
-Run:
+## 2. Login
+
+Git:
+
+```powershell
+git push
+```
+
+If GitHub asks for login, a browser window may open. Sign in there. Do not type your GitHub password into chat.
+
+If PowerShell asks for credentials:
+
+```text
+Username: your GitHub username
+Password: GitHub token, not normal password
+```
+
+Perforce:
+
+```powershell
+p4 login
+```
+
+Then type your Perforce password when the terminal asks.
+
+## 3. Update One Existing File
+
+Example: `D:\design_plans\KID_GUIDE.md` changed, and you want to update `kids_guide.md` in this repo.
+
+Git:
 
 ```powershell
 cd D:\git_check
@@ -39,18 +94,39 @@ Copy-Item -Force D:\design_plans\KID_GUIDE.md D:\git_check\kids_guide.md
 git status
 git add kids_guide.md
 git commit -m "Update kids guide"
+```
+
+Stop here if you want local only.
+
+Publish to GitHub only when ready:
+
+```powershell
 git push
 ```
 
-That is the normal flow:
+Perforce:
 
-```text
-copy/edit file -> git status -> git add -> git commit -> git push
+```powershell
+cd D:\your_p4_workspace
+p4 edit path\to\kids_guide.md
+Copy-Item -Force D:\design_plans\KID_GUIDE.md path\to\kids_guide.md
+p4 opened
+p4 diff path\to\kids_guide.md
 ```
 
-## 3. Upload a New File
+Stop here if you want local only.
 
-Example: add a new file called `new_notes.md`.
+Publish to Perforce only when ready:
+
+```powershell
+p4 submit -d "Update kids guide"
+```
+
+## 4. Add One New File
+
+Example: add `new_notes.md`.
+
+Git:
 
 ```powershell
 cd D:\git_check
@@ -58,24 +134,44 @@ Copy-Item -Force D:\design_plans\new_notes.md D:\git_check\new_notes.md
 git status
 git add new_notes.md
 git commit -m "Add new notes"
+```
+
+Publish only when ready:
+
+```powershell
 git push
 ```
 
-## 4. Upload a New Directory and Keep the Structure
+Perforce:
 
-Example: you have this folder:
+```powershell
+cd D:\your_p4_workspace
+Copy-Item -Force D:\design_plans\new_notes.md path\to\new_notes.md
+p4 add path\to\new_notes.md
+p4 opened
+```
+
+Publish only when ready:
+
+```powershell
+p4 submit -d "Add new notes"
+```
+
+## 5. Add a New Directory and Keep Structure
+
+Example source folder:
 
 ```text
 D:\design_plans\pnp_ip\lfsr_misr
 ```
 
-You want it to appear in GitHub as:
+You want GitHub or Perforce to keep this structure:
 
 ```text
 pnp_ip\lfsr_misr
 ```
 
-Run:
+Git:
 
 ```powershell
 cd D:\git_check
@@ -84,56 +180,94 @@ Copy-Item -Recurse -Force D:\design_plans\pnp_ip\lfsr_misr D:\git_check\pnp_ip\
 git status
 git add pnp_ip/lfsr_misr
 git commit -m "Add lfsr misr design"
+```
+
+Publish only when ready:
+
+```powershell
 git push
 ```
 
-Important: do not copy only the files if you want the folder structure. Copy the folder into the matching parent folder.
+Perforce:
 
-## 5. Upload Many Changed Files
+```powershell
+cd D:\your_p4_workspace
+New-Item -ItemType Directory -Force path\to\pnp_ip | Out-Null
+Copy-Item -Recurse -Force D:\design_plans\pnp_ip\lfsr_misr path\to\pnp_ip\
+p4 reconcile path\to\pnp_ip\lfsr_misr\...
+p4 opened
+```
 
-If you already copied or edited many files inside `D:\git_check`, run:
+Publish only when ready:
+
+```powershell
+p4 submit -d "Add lfsr misr design"
+```
+
+Key idea:
+
+```text
+Copy the folder into the matching parent folder.
+Do not flatten the files.
+```
+
+## 6. Update Many Files
+
+Use this only when you looked at `git status` or `p4 opened` and agree with all changes.
+
+Git:
 
 ```powershell
 cd D:\git_check
 git status
 git add .
 git commit -m "Update design files"
-git push
 ```
 
-Use `git add .` only when you really want to upload all changed files shown by `git status`.
-
-## 6. What To Do If GitHub Asks Login
-
-When you run:
+Publish only when ready:
 
 ```powershell
 git push
 ```
 
-GitHub may open a browser login window.
+Perforce:
 
-Do this:
-
-1. Sign in to GitHub in that browser window.
-2. Approve Git Credential Manager.
-3. Come back to PowerShell.
-4. The push should continue.
-
-If PowerShell asks for username and password:
-
-```text
-Username: your GitHub username
-Password: use a GitHub token, not your normal GitHub password
+```powershell
+cd D:\your_p4_workspace
+p4 reconcile path\to\project\...
+p4 opened
 ```
 
-Do not paste your GitHub password into chat.
+Publish only when ready:
 
-## 7. If Push Says Remote Has New Work
+```powershell
+p4 submit -d "Update design files"
+```
 
-Sometimes GitHub has a change that your computer does not have yet.
+## 7. Review Before Publishing
 
-Run:
+Git:
+
+```powershell
+cd D:\git_check
+git status
+git diff
+git diff --staged
+git log -1 --oneline
+```
+
+Perforce:
+
+```powershell
+cd D:\your_p4_workspace
+p4 opened
+p4 diff
+p4 describe -s pending_changelist_number
+```
+
+## 8. If GitHub Has New Files First
+
+If `git push` says the remote has new work, run:
 
 ```powershell
 cd D:\git_check
@@ -141,90 +275,54 @@ git pull --rebase
 git push
 ```
 
-If Git says there is a conflict, stop and fix the conflict before pushing.
-
-## 8. Check What Will Be Uploaded
-
-Before commit:
+Perforce equivalent is sync first:
 
 ```powershell
-git status
-git diff
+cd D:\your_p4_workspace
+p4 sync
 ```
 
-After commit, to see the last commit:
+## 9. Parallel Perforce Sync
 
-```powershell
-git log -1 --oneline
-```
-
-## 9. Perforce Similar Commands
-
-Perforce is different from Git, but the idea is similar.
-
-### Perforce Login
-
-```powershell
-p4 login
-```
-
-### See Changed Files
-
-```powershell
-p4 opened
-```
-
-### Add a New File
-
-```powershell
-p4 add path\to\new_file.sv
-```
-
-### Edit an Existing File
-
-```powershell
-p4 edit path\to\existing_file.sv
-```
-
-### Submit to Perforce
-
-```powershell
-p4 submit -d "Update design files"
-```
-
-### Reconcile a Whole Directory
-
-This finds added, edited, and deleted files under a directory:
-
-```powershell
-p4 reconcile //depot/path/to/project/...
-p4 submit -d "Update project files"
-```
-
-### Parallel Perforce Sync Example
-
-This is useful when syncing many big files:
+Use this when syncing a large Perforce depot path:
 
 ```powershell
 p4 -Zparallel=threads=8 sync //depot/path/to/project/...
 ```
 
-Use your real depot path instead of `//depot/path/to/project/...`.
+Example with a client workspace path:
+
+```powershell
+p4 -Zparallel=threads=8 sync path\to\project\...
+```
+
+Use your real depot path or workspace path.
 
 ## 10. Quick Memory
 
-Git:
+Git local only:
 
 ```powershell
 git status
 git add .
 git commit -m "Message"
+```
+
+Git publish:
+
+```powershell
 git push
 ```
 
-Perforce:
+Perforce local only:
 
 ```powershell
-p4 reconcile //depot/path/...
+p4 reconcile path\to\project\...
+p4 opened
+```
+
+Perforce publish:
+
+```powershell
 p4 submit -d "Message"
 ```
