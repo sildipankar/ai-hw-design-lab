@@ -24,7 +24,7 @@ Upload the following files to your GitHub repository so you can download or refe
 We will build the **LFSR32** (random data maker) and the **MISR32** (result checker) first. Both systems need these blocks!
 
 ### Step 1: Create a Folder
-On your Windows computer, create a new folder here:
+On your computer, create a new folder here:
 `D:\lfsr_misr`
 
 ---
@@ -126,14 +126,55 @@ Requirements:
 
 ---
 
+### Step 4A: Make the Synthesizable Hardware Wrapper (`lfsr_misr_hw_top.sv`) (No C, No DPI)
+1. Open a chat session with your local AI agent.
+2. Copy and paste this single prompt and press **Enter**:
+```markdown
+Please read these two source files from my disk:
+- `D:\lfsr_misr\lfsr32.sv`
+- `D:\lfsr_misr\misr32.sv`
+
+Now, write a fully synthesizable, pure SystemVerilog wrapper module `lfsr_misr_hw_top` that connects `lfsr32` and `misr32` together in a loop. Save it directly to `D:\lfsr_misr\lfsr_misr_hw_top.sv`.
+
+Requirements:
+1. Expose these top-level input ports:
+   - `clk`
+   - `rst` (synchronous active-high reset)
+   - `load` (load seed)
+   - `seed[31:0]` (test seed)
+   - `enable` (advance LFSR)
+   - `clear` (clear MISR)
+2. Expose these top-level output ports:
+   - `prdata[31:0]` (current LFSR output)
+   - `valid` (LFSR data valid flag)
+   - `signature[31:0]` (current compressed signature)
+3. Inside the wrapper:
+   - Instantiate `lfsr32`. Connect its `clk`, `rst`, `load`, `seed`, and `enable` to the top-level inputs.
+   - Instantiate `misr32`. Connect its `clk`, `rst`, and `clear` to the top-level inputs.
+   - Connect the output `prdata` and `valid` from `lfsr32` directly to the input `data` and `valid` of `misr32`.
+4. Ensure there is NO clock generation, NO C/DPI-C declarations, and NO simulation-only constructs. The code must be 100% ready for hardware synthesis and emulator bring-up.
+```
+
+---
+
 ### Step 5: Run the Simulation & HW Validation
-1. Open **PowerShell** and type these commands:
-   ```powershell
-   cd D:\
-   powershell -ExecutionPolicy Bypass -File scripts\run_sim.ps1 lfsr_misr
-   ```
-2. Look at the output in the window. It must print:
-   `*** PASS: tb_lfsr_misr, 0 errors ***`
+Depending on whether you simulate on Windows or Linux, execute the commands below:
+
+**Windows PowerShell:**
+```powershell
+cd D:\
+powershell -ExecutionPolicy Bypass -File scripts\run_sim.ps1 lfsr_misr
+```
+
+**Linux Bash Shell:**
+```bash
+cd /path/to/your/D/drive/root
+chmod +x scripts/run_sim.sh
+./scripts/run_sim.sh lfsr_misr
+```
+
+Look at the output in the simulation window. It must print:
+`*** PASS: tb_lfsr_misr, 0 errors ***`
 
 #### 🔌 Protium Emulator HW Validation (How to verify on the board):
 * **LFSR32 Standalone Bring-Up:**
@@ -305,11 +346,22 @@ Requirements:
 ---
 
 ### Step 8: Run Sim & HW Validation for System 1
-Run the following commands in PowerShell:
+Depending on whether you simulate on Windows or Linux, execute the commands below:
+
+**Windows PowerShell:**
 ```powershell
 cd D:\
 powershell -ExecutionPolicy Bypass -File scripts\run_sim.ps1 alink_mini
 ```
+
+**Linux Bash Shell:**
+```bash
+cd /path/to/your/D/drive/root
+./scripts/run_sim.sh alink_mini
+```
+
+Look at the output in the simulation window. It must print:
+`*** PASS: tb_alink_mini, 0 errors ***`
 
 #### 🔌 Protium Emulator HW Validation (How to verify on the board):
 * **Top Wrapper:** `alink_mini_top`
@@ -362,11 +414,20 @@ Use your local AI agent to generate the remaining files needed for the complete 
 ---
 
 ### Step 4: Run Sim & HW Validation for System 2
-Run the following commands in PowerShell:
+Depending on whether you simulate on Windows or Linux, execute the commands below:
+
+**Windows PowerShell:**
 ```powershell
 cd D:\
 powershell -ExecutionPolicy Bypass -File scripts\run_sim.ps1 alink
 ```
+
+**Linux Bash Shell:**
+```bash
+cd /path/to/your/D/drive/root
+./scripts/run_sim.sh alink
+```
+
 Check that the output prints:
 `*** PASS: tb_alink, 0 errors ***`
 
